@@ -19,7 +19,7 @@ static NSString *const kBeaconUTTypeLivePhotoBundle = @"com.apple.live-photo-bun
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.preferredVideoQuality = UIImagePickerControllerQualityTypeMedium;
+        self.preferredVideoQuality = UIImagePickerControllerQualityTypeLow;
     }
     return self;
 }
@@ -171,8 +171,6 @@ static NSString *const kBeaconUTTypeLivePhotoBundle = @"com.apple.live-photo-bun
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     imagePicker.allowsEditing = NO;
-    imagePicker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie, nil];
-    imagePicker.videoQuality = self.preferredVideoQuality;
     imagePicker.sourceType = sourceType;
     [self.delegate attachmentPickerMenu:self showController:imagePicker completion:^{
         UIApplication.sharedApplication.statusBarHidden = YES;
@@ -181,7 +179,7 @@ static NSString *const kBeaconUTTypeLivePhotoBundle = @"com.apple.live-photo-bun
 
 - (void)showPhotoPicker API_AVAILABLE(ios(14)) {
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
-    configuration.filter = [PHPickerFilter anyFilterMatchingSubfilters:@[PHPickerFilter.imagesFilter, PHPickerFilter.livePhotosFilter, PHPickerFilter.videosFilter]];
+    configuration.filter = [PHPickerFilter anyFilterMatchingSubfilters:@[PHPickerFilter.imagesFilter]];
 
     PHPickerViewController *imagePicker = [[PHPickerViewController alloc] initWithConfiguration:configuration];
     imagePicker.delegate = self;
