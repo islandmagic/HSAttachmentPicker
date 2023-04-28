@@ -9,6 +9,7 @@
 @interface HSAttachmentPicker () <HSAttachmentPickerPhotoPreviewControllerDelegate, UIDocumentPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate>
 
 @property(nonatomic) HSAttachmentPicker *selfReference;
+@property(nonatomic) UIBarButtonItem *barButtonItem;
 
 @end
 
@@ -24,9 +25,25 @@ static NSString *const kBeaconUTTypeLivePhotoBundle = @"com.apple.live-photo-bun
     return self;
 }
 
+- (instancetype)initWithBarButtonItem:(UIBarButtonItem *)barButtonItem {
+    if (self = [self init]) 
+    {
+        if (barButtonItem)
+        {
+            self.barButtonItem = barButtonItem;
+        }
+    }
+    return self;    
+}
+
 - (void)showAttachmentMenu {
     self.selfReference = self;
     UIAlertController *picker = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if (self.barButtonItem)
+    {
+        picker.popoverPresentationController.barButtonItem = self.barButtonItem;
+    }
+
     NSString *showPhotosPermissionSettingsMessage = [NSBundle.mainBundle objectForInfoDictionaryKey:@"NSPhotoLibraryUsageDescription"];
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera] && showPhotosPermissionSettingsMessage != nil) {
         UIAlertAction *takePhotoAction = [UIAlertAction actionWithTitle:[self translateString:@"Take Photo"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
